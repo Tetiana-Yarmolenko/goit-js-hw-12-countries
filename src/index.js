@@ -1,16 +1,18 @@
 import './styles.css';
 import "@pnotify/core/dist/PNotify.css";
 import "@pnotify/core/dist/BrightTheme.css";
-  
+import debounce from 'lodash.debounce';
 
 import countryCardTpl from '../tamplate/country.hbs';
 import countriesListCardTpl from '../tamplate/countries.hbs';
-import debounce from 'lodash.debounce';
+
 import API from './js/fetchCountries';
 import getRefs from './js/get-refs'
 
+
+const { error, success } = require('@pnotify/core');
+// дані з розмітки
 const refs = getRefs();
-const { error } = require('@pnotify/core');
 
 refs.search.addEventListener(`input`, debounce(onSearch, 500));
  
@@ -29,27 +31,30 @@ function renderCountriesCard(country) {
 
 function onSearch(e) {
   const searchQuery = e.target.value;
-  console.log(searchQuery);
+
   clearList();
   API.fetchCountries(searchQuery)
-    .then(data => {
-      if (data.length > 10) {
+    .then(country => {
+      if (country.length > 10) {
         error({
           text: 'Too many matches found. Please enter a more specific query!',
         });
       }
-      else if (data.length >= 2 && data.length <= 10) {
-        renderCountriesCard(data);
-        // success();
+      else if (country.length >= 2 && country.length <= 10) {
+        renderCountriesCard(country);
       }
-      else if (data.length === 1) {
-        renderCountryCard(data);
+      else if (country.length === 1) {
+        renderCountryCard(country);
+        success({
+         title: 'Success!',
+         text: 'That thing that you were trying to do worked.',
+        });
       }
       else {
-        error({
-    title: 'Oh No!',
-    text: 'No matches found with such query. Please, try to fill up another name of the country',
-  });
+      error({
+          title: 'Oh No!',
+        text: 'No matches found with such query. Please, try to fill up another name of the country',
+        });  
       }
     })
 }
@@ -58,9 +63,3 @@ function clearList() {
   refs.countriesList.innerHTML = '';
 }
 
-// function success() {
-//   success({
-//     title: 'Success!',
-//     text: 'That thing that you were trying to do worked.',
-//   });
-// }
