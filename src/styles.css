@@ -17,24 +17,35 @@ img {
   height: auto;
 }
 
-.card {
-  width: 288px;
+.wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.card-text {
-  margin-top: 0;
+.countries-list {
+  display: flex;
+  list-style-type: none;
+  flex-direction: column;
+  font-family: 'Cairo', sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+}
+.countries-list__item {
+  margin-bottom: 30px;
+}
+.country {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.country_item {
+  font-size: 25px;
+}
+.country_item:not(:last-child) {
   margin-bottom: 10px;
 }
-
-.card-img-top {
-  display: flex;
-  justify-content: center;
-}
-
-.search-form {
-  padding: 10px;
-}
-
-.card {
-  margin: 10px;
+.country_name {
+  text-align: center;
+  font-size: 40px;
 }
