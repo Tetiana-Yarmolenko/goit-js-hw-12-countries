@@ -30,9 +30,14 @@ function renderCountriesCard(country) {
 
 
 function onSearch(e) {
-  const searchQuery = e.target.value;
+  const searchQuery = e.target.value.trim();
+  
+    if(searchQuery.length === 0){
+   clearList();
+    return;
+  }
 
-  clearList();
+  
   API.fetchCountries(searchQuery)
     .then(country => {
       if (country.length > 10) {
@@ -46,19 +51,20 @@ function onSearch(e) {
       else if (country.length === 1) {
         renderCountryCard(country);
         success({
-         title: 'Success!',
-         text: 'That thing that you were trying to do worked.',
+          title: 'Success!',
+          text: 'That thing that you were trying to do worked.',
         });
       }
       else {
-      error({
+        error({
           title: 'Oh No!',
-        text: 'No matches found with such query. Please, try to fill up another name of the country',
-        });  
+          text: 'No matches found with such query. Please, try to fill up another name of the country',
+        });
       }
-    })
+    });
 }
 
+// очищення списку
 function clearList() {
   refs.countriesList.innerHTML = '';
 }
